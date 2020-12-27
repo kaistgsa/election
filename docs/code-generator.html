@@ -167,7 +167,7 @@
   <h1>KAIST 대학원 총학생회 총선거 선거 복권 코드 생성기</h1>
   <p>KAIST 대학원 총학생회는 중앙선거관리위원회의 위탁을 받아 선거 복권 코드 생성기 운영 및 추첨 업무를 수행하고 있습니다.</p>
   <p>선거 복권 코드 생성기는 현재 개발 중이며, 실제 투표 시점에 달라질 수 있습니다.</p>
-  <button class="generate-button" onclick="generate();">새로운 코드 생성하기</button>
+  <button class="generate-button" onclick="typeof generate !== 'undefined' ? generate() : alert('코드를 생성하는 데 실패했습니다. 다른 웹 브라우저나 다른 기기로 시도해 보십시오.')">새로운 코드 생성하기</button>
   <h3>설문 입력용 공개 코드(제출용)</h3>
   <div class="code-viewer">
     <span class="code-public">여기에 생성된 공개 코드가 표시됩니다.</span>
