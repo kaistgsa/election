@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width" />
+  <title>KAIST 대학원 총학생회 총선거 선거 복권 코드 생성기</title>
+  <link href="normalize.css" rel="stylesheet" />
+  <script>
+    // 버퍼를 hex 문자열로 변환합니다.
+    function bufferToHex(buffer) {
+      return [...new Uint8Array(buffer)]
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    // 무작위 키를 생성합니다.
+    async function generateKey() {
+      return await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256', length: 256 }, true, ['sign']);
+    }
+
+    // 무작위 데이터를 생성합니다.
+    function generateData() {
+      return crypto.getRandomValues(new Uint8Array(32));
+    }
+
+    // 비밀 코드와 공개 코드를 생성한 다음 페이지 본문에 표시합니다.
+    async function generate() {
+      try {
+        // 모든 기능을 사용할 수 있는지 테스트합니다.
+        const testKeyArray = new Uint8Array([157, 175, 221, 154, 34, 25, 28, 211, 250, 150, 9, 133, 26, 12, 21, 40, 11, 30, 95, 34, 122, 141, 219, 242, 184, 107, 20, 106, 40, 202, 255, 198]);
+        const testDataArray = new Uint8Array([54, 237, 168, 107, 100, 63, 159, 168, 231, 21, 209, 185, 19, 67, 113, 12, 237, 139, 202, 79, 135, 42, 223, 22, 111, 10, 22, 87, 137, 187, 45, 26]);
+        const testPublic = 'bf6ae3409b476db93a781e4dc51a00aa23c493c77dcfc486cc7ff00e93b6c143';
+        const testPrivate = '36EDA86B643F9FA8E715D1B91343710CED8BCA4F872ADF166F0A165789BB2D1A9DAFDD9A22191CD3FA9609851A0C15280B1E5F227A8DDBF2B86B146A28CAFFC6';
+        if (testPrivate !== (bufferToHex(testDataArray) + bufferToHex(testKeyArray)).toUpperCase()) {
+          throw Error();
+        }
+        const testKey = await crypto.subtle.importKey('raw', testKeyArray, { name: 'HMAC', hash: 'SHA-256', length: 256 }, false, ['sign']);
+        if (testPublic !== bufferToHex(await crypto.subtle.sign('HMAC', testKey, testDataArray)).toLowerCase()) {
+          throw Error();
+        }
+
+        // 테스트 완료
+
+        // 무작위 키와 데이터를 생성합니다.
+        const key = await generateKey();
+        const data = generateData();
+        // HMAC-SHA256을 계산합니다.
+        const signature = await crypto.subtle.sign('HMAC', key, data);
+
+        // 키, 데이터, HMAC을 텍스트로 변환합니다.
+        const keyText = bufferToHex(await crypto.subtle.exportKey('raw', key));
+        const dataText = bufferToHex(data);
+        const signatureText = bufferToHex(signature);
+
+        // 키와 데이터를 비밀 코드로 합니다.
+        // 저해상도 스크린샷으로 보관하였을 때도 명확하게 식별할 수 있도록, 대문자만 사용합니다.
+        const privateText = (dataText + keyText).toUpperCase();
+
+        // HMAC을 공개 코드로 합니다.
+        // 비밀 코드와 구분할 목적으로, 소문자만 사용합니다.
+        const publicText = signatureText.toLowerCase();
+
+        document.querySelector('.code-private').innerHTML = privateText;
+        document.querySelector('.code-public').innerHTML = publicText;
+        alert('지금 바로 코드를 텍스트나 스크린샷으로 저장해 두십시오.\n코드를 확실하게 보관한 다음, 공개 코드만 설문에 입력하십시오.');
+      } catch (err) { // Internet Explorer에서 optional catch binding 미지원
+        // 매우 오래된 웹 브라우저(Internet Explorer 10 등)에서는 실패할 수 있습니다.
+        alert('코드를 생성하는 데 실패했습니다. 다른 웹 브라우저나 다른 기기로 시도해 보십시오.');
+      }
+    }
+  </script>
+  <style>
+    h1 {
+      font-size: 1.25em;
+    }
+
+    h2 {
+      font-size: 1em;
+    }
+
+    h3 {
+      margin-top: 1.5em;
+      margin-bottom: 0.3em;
+    }
+
+    body {
+      margin-left: 1em;
+      margin-right: 1em;
+      word-break: keep-all;
+      margin-bottom: 3em;
+    }
+
+    .code-viewer {
+      line-height: 1.4;
+      border-radius: 0.4em;
+      background-color: #ddd;
+      padding: 0.3em 0.8em;
+    }
+
+    .code-private,
+    .code-public {
+      font-family: monospace, monospace;
+      font-weight: bold;
+      word-break: break-all;
+      font-size: 1em;
+    }
+
+    .generate-button {
+      margin-top: 0.5em;
+      margin-left: 3em;
+      padding: 0.6em 2em;
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    .code-description {
+      margin-top: 1.5em;
+      line-height: 1.5;
+      font-size: 1em;
+    }
+
+    .code-design {
+      font-size: 0.8em;
+      line-height: 1.5;
+    }
+
+    ul {
+      padding-left: 1em;
+    }
+
+    hr {
+      margin-bottom: 16em;
+    }
+
+    .strong {
+      font-weight: bold;
+      animation: strong-color 6s infinite;
+    }
+
+    @keyframes strong-color {
+      0% {
+        color: #B10DC9;
+      }
+
+      25% {
+        color: #0074D9;
+      }
+
+      50% {
+        color: #3D9970;
+      }
+
+      75% {
+        color: #FF851B;
+      }
+
+      100% {
+        color: #B10DC9;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>KAIST 대학원 총학생회 총선거 선거 복권 코드 생성기</h1>
+  <p>KAIST 대학원 총학생회는 중앙선거관리위원회의 위탁을 받아 선거 복권 코드 생성기 운영 및 추첨 업무를 수행하고 있습니다.</p>
+  <p>선거 복권 코드 생성기는 현재 개발 중이며, 실제 투표 시점에 달라질 수 있습니다.</p>
+  <button class="generate-button" onclick="generate();">새로운 코드 생성하기</button>
+  <h3>설문 입력용 공개 코드(제출용)</h3>
+  <div class="code-viewer">
+    <span class="code-public">여기에 생성된 공개 코드가 표시됩니다.</span>
+  </div>
+  <h3>본인 확인용 비밀 코드(보관용)</h3>
+  <div class="code-viewer">
+    <span class="code-private">여기에 생성된 비밀 코드가 표시됩니다.</span>
+  </div>
+  <div class="code-description">
+    <ul>
+      <li><span class="strong">페이지를 벗어나면 다시는 똑같은 코드 조합을 확인할 수 없습니다.</span></li>
+      <li><span class="strong">공개 코드만 복사하여 설문에 입력</span>하십시오.</li>
+      <li><span class="strong">비밀 코드는 텍스트 또는 스크린샷으로 보관</span>하십시오.</li>
+      <li>코드가 길어 여러 줄에 걸쳐 표시될 수 있습니다. <span class="strong">코드 전체를 정확하게 선택</span>하십시오.</li>
+      <li>여러 번 생성해도 괜찮지만, 실제로 투표했을 때의 비밀 코드는 반드시 보관하십시오.</li>
+      <li>선거 복권 참여는 선택입니다. 비밀 코드 분실 시 상품을 수령할 수 없습니다.</li>
+      <li>더 자세한 내용을 알아보려면 아래 내용을 읽어 보십시오.</li>
+    </ul>
+  </div>
+  <hr />
+
+  <h2>비밀 코드와 공개 코드의 보안성</h2>
+  <div class="code-design">
+    <ul>
+      <li>비밀 코드는 무작위로 생성됩니다.</li>
+      <li>여러분의 웹 브라우저가 스스로 코드를 생성합니다. 서버와 통신하는 내용은 없습니다. 생성된 코드가 마음에 들지 않으면 코드를 반복 생성한 다음 하나를 골라도 됩니다.</li>
+      <li>공개 코드는 비밀 코드를 이용하여 계산됩니다. 비밀 코드에서 공개 코드를 순방향으로 계산하기는 쉽습니다. 그러나 공개 코드만 알고 있을 때, 비밀 코드를 역방향으로 알아내는 것은 매우 어렵습니다.
+      </li>
+      <li>역방향 계산이 힘든 특징은 SHA-256 알고리즘에 기인합니다. SHA-256은 HTTPS, SSH, 비트코인, 공동인증서 등 다양한 보안 애플리케이션에서 사용되고 있으며, 한국인터넷진흥원,
+        NIST 등에서 권장하는 알고리즘에 속합니다.</li>
+      <li>코드 생성 규칙(이 페이지의 소스를 살펴보십시오)에 따라 직접 코드를 생성하실 수도 있습니다.</li>
+    </ul>
+  </div>
+  <h2>KAIST 포탈 설문 시스템을 이용한 비밀 선거</h2>
+  <div class="code-design">
+    <ul>
+      <li>KAIST 포탈 설문 시스템에는 익명 설문 기능이 있으며, 설문 작성 및 기록 열람 권한이 있는 직원이나 중앙선거관리위원회도, 익명 설문에서는 타인이 작성한 내용을 열람하거나 수정할 수 없습니다.
+      </li>
+      <li>데이터베이스 서버는 방화벽과 접근 제한 프로그램으로 보호되고 있으며, 접근 로그를 기록하고 있어 해킹 시도 추적이 가능합니다.</li>
+      <li>개인을 식별할 수 있는 정보가 없는 투표 내용과 공개 코드만 이용하여, 당선자 확정과 선거 복권 추첨을 진행합니다. 투표 내용과 공개 코드는 분리하여 취급합니다.</li>
+    </ul>
+  </div>
+  <h2>검증 가능한 추첨</h2>
+  <div class="code-design">
+    <ul>
+      <li>투표 기간이 끝나면, 제출된 모든 공개 코드를 완전히 공개합니다. 중복되는 공개 코드는 추첨 대상에서 모두 제외합니다. 선거 복권 코드 생성기가 사용하는 생성 규칙으로 생성될 수 없는 코드를 추첨
+        대상에서 모두 제외합니다.</li>
+      <li>투표 마감일까지는 누구도 예측하는 것이 사실상 불가능한 미래의 정보를 섞어, 당첨 순위를 결정합니다.</li>
+      <li>추첨 프로그램은 공개되어 있으며, 누구든지 추첨 결과를 재현할 수 있습니다. https://github.com/kaistgsa/election/</li>
+      <li>
+        정보 기준일은 투표 마감일 다음 날로 합니다. 투표 마감일 다음 날이 금융 시장 휴장일인 경우, 다음 개장일로 합니다.
+        예를 들어, 투표 마감이 1월 13일(수) 24시인 경우, 정보 기준일은 1월 14일(목)입니다.
+        또 다른 예로, 투표 마감이 1월 15일(금) 18시인 경우, 투표 마감일 다음 날은 1월 16일(토)입니다.
+        그러나 1월 16일(토)과 17일(일)은 휴장일이므로, 정보 기준일은 1월 18일(월)입니다.
+      </li>
+      <li>숫자는 ASCII 코드가 0x30부터 0x39까지인 0, 1, 2, 3, 4, 5, 6, 7, 8, 9를 사용합니다. 마이너스 부호는 ASCII 코드 0x2D인 -를 사용합니다. 소수점은 ASCII
+        코드 0x2E인 .를 사용합니다. 천 단위 구분 기호는 사용하지 않습니다. 사전식 순서는
+        0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz로 합니다.</li>
+    </ul>
+  </div>
+  <h2>추첨에 사용되는 정보 목록</h2>
+  <div class="code-design">
+    <ol>
+      <li>하나은행 USD 최종 매매기준율</li>
+      <li>하나은행 EUR 최종 매매기준율</li>
+      <li>하나은행 JPY 100 최종 매매기준율</li>
+      <li>하나은행 CNY 최종 매매기준율</li>
+      <li>하나은행 GBP 최종 매매기준율</li>
+      <li>KOSPI 종가</li>
+      <li>KODEX 200(유가증권시장 69500) 종가</li>
+      <li>KODEX 레버리지(유가증권시장 122630) 종가</li>
+      <li>TIGER 200(유가증권시장 102110) 종가</li>
+      <li>삼성전자(유가증권시장 005930) 종가</li>
+      <li>SK하이닉스(유가증권시장 000660) 종가</li>
+      <li>LG화학(유가증권시장 051910) 종가</li>
+      <li>삼성전자우(유가증권시장 005935) 종가</li>
+      <li>유효한 모든 공개 코드를 사전식 순서로 정렬한 다음, 공백 없이 이어 붙인 것</li>
+    </ol>
+  </div>
+  <h2>상품 수령 절차</h2>
+  <div class="code-design">
+    <ol>
+      <li>상기 추첨 방법에 따라 당첨 순위를 계산합니다. 추첨 프로그램에서 더 먼저 출력된 공개 코드의 당첨 순위가 더 높습니다.</li>
+      <li>중앙선거관리위원회는 당첨 순위가 높은 순서대로 당첨자의 공개 코드를 공고합니다.</li>
+      <li>당첨자는 비밀 코드를 제시하여 본인의 공개 코드 생성이 재현되는 것을 증명하고, 상품을 수령합니다.</li>
+      <li>중앙선거관리위원회가 정한 기한까지 당첨자가 상품을 수령하지 않은 경우, 차순위 당첨자의 공개 코드를 공고합니다.</li>
+    </ol>
+  </div>
+</body>
+
+</html>
