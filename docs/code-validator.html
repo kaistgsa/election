@@ -43,13 +43,17 @@
         // 테스트 완료
 
         // 문자열 비밀 코드를 원래 상태로 되돌립니다.
-        const input = document.querySelector('.code-private').value.trim().toLowerCase();
+        const input = document.querySelector('.code-private').value.trim();
         if (input.length !== 128) {
           alert('비밀 코드 생성 규칙으로는 생성될 수 없는 코드가 입력되었습니다. 반드시 128 글자여야 합니다.');
           return;
         }
-        const dataText = input.substr(0, 64);
-        const keyText = input.substr(64);
+        if (!/^[0-9A-F]{128}$/.test(input)) {
+          alert('비밀 코드 생성 규칙으로는 생성될 수 없는 코드가 입력되었습니다. 코드에 사용되지 않는 문자가 포함되어 있습니다.');
+          return;
+        }
+        const dataText = input.substr(0, 64).toLowerCase();
+        const keyText = input.substr(64).toLowerCase();
 
         const key = await crypto.subtle.importKey('raw', hexToArray(keyText),
           { name: 'HMAC', hash: 'SHA-256', length: 256 }, false, ['sign']);
