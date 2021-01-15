@@ -1,4 +1,4 @@
-// 예제 데이터입니다.
+// 공개 데이터입니다.
 export const codeList: string[] = [
     '1f6cfa0924bc029152d3beec49f3d6ece300ecd372a9fecbd7a340e9d39aaee8',
     '230f791eb1421c5fc601bbfb392e15007ee47ab102c6d0d5433fdc5ddfca3b1a',
