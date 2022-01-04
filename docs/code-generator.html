@@ -72,6 +72,7 @@
 
         document.querySelector('.code-private').innerHTML = privateText;
         document.querySelector('.code-public').innerHTML = publicText;
+        document.querySelectorAll('.code-viewer').forEach(viewer => viewer.className = 'code-viewer');
         alert(!english ?
           '지금 바로 전체 코드를 텍스트나 스크린샷으로 저장해 두십시오.\n코드를 확실하게 보관한 다음, 공개 코드만 설문에 입력하십시오.' :
           'Save the entire code as text or screenshot right now. Make sure the code pair is well kept, and then enter your public code into the form.');
@@ -112,8 +113,12 @@
     .code-viewer {
       line-height: 1.4;
       border-radius: 0.4rem;
-      background-color: #ddd;
+      background-color: #ddf2fb;
       padding: 0.3em 0.8rem;
+    }
+
+    .empty {
+      color: #999;
     }
 
     .code-private,
@@ -190,6 +195,19 @@
     .body-en .ko {
       display: none;
     }
+
+    .small {
+      font-size: 0.8em;
+    }
+
+    .code-inst {
+      font-size: 0.8em;
+      color: #444;
+    }
+
+    .margin-left {
+      margin-left: 0.8em;
+    }
   </style>
 </head>
 
@@ -200,13 +218,12 @@
   </button>
   <h1 class="ko">KAIST 대학원 총학생회 총선거 선거 복권 코드 생성기</h1>
   <h1 class="en">GSA Election Lottery Code Generator</h1>
-  <p class="ko">KAIST 대학원 총학생회는 중앙선거관리위원회의 위탁을 받아 선거 복권 코드 생성기 운영 및 추첨 업무를 수행하고 있습니다.</p>
-  <p class="en">
+  <p class="ko small">KAIST 대학원 총학생회는 중앙선거관리위원회의 위탁을 받아 선거 복권 코드 생성기 운영 및 추첨 업무를 수행하고 있습니다.</p>
+  <p class="en small">
     The KAIST GSA operate the Election Lottery Code Generator at the request of the GSA Election Commission.
   </p>
-  <p class="ko">선거가 종료되었습니다.</p>
-  <p class="en">The election is over.</p>
-  <!--
+  <!-- <p class="ko">선거가 종료되었습니다.</p> -->
+  <!-- <p class="en">The election is over.</p> -->
   <button class="generate-button ko"
     onclick="typeof generate !== 'undefined' ? generate() : alert('코드 계산에 필요한 기능을 사용할 수 없습니다. 다른 웹 브라우저나 다른 기기로 시도해 보십시오.')">
     새로운 코드 생성하기
@@ -215,30 +232,31 @@
     onclick="typeof generate !== 'undefined' ? generate() : alert('Some functions required for code calculation are not available. Try with a different web browser or another device.')">
     Generate a new individual code pair
   </button>
-  <h3 class="ko">공개 코드(설문 입력용)</h3>
-  <h3 class="en">Public Code<br />Enter it into the form.</h3>
-  <div class="code-viewer">
+  <h3 class="ko">공개 코드<span class="code-inst margin-left">설문에 입력하십시오.</span></h3>
+  <h3 class="en">Public Code<br /><span class="code-inst">Enter it into the form.</span></h3>
+  <div class="code-viewer empty">
     <span class="code-public">
-      <span class="ko">여기에 생성된 공개 코드가 표시됩니다.</span>
+      <span class="ko">공개 코드가 여기에 표시됩니다.</span>
       <span class="en">Your public code will be displayed here.</span>
     </span>
   </div>
-  <h3 class="ko">비밀 코드(입력 금지, 보관, 검증용)</h3>
-  <h3 class="en">Private Code<br />Don't enter it into the form; keep it.</h3>
-  <div class="code-viewer">
+  <h3 class="ko">비밀 코드<span class="code-inst margin-left">별도로 안전하게 보관하십시오. 당첨 시 확인이 필요합니다.</span></h3>
+  <h3 class="en">Private Code<br /><span class="code-inst">Don't enter it into the form; keep it.</span></h3>
+  <div class="code-viewer empty">
     <span class="code-private">
-      <span class="ko">여기에 생성된 비밀 코드가 표시됩니다.</span>
+      <span class="ko">비밀 코드가 여기에 표시됩니다.</span>
       <span class="en">Your private code will be displayed here.</span>
     </span>
   </div>
   <div class="code-description ko">
     <ul>
-      <li><span class="strong">페이지를 벗어나면 다시는 똑같은 조합을 확인할 수 없습니다.</span></li>
-      <li><span class="strong">코드가 길어 여러 줄로 분리 표시될 수 있습니다. 코드 전체를 정확하게 선택하십시오.</span></li>
+      <li><span class="strong">이 페이지를 벗어나시면 동일한 코드 조합을 다시는 확인하실 수 없습니다.</span></li>
+      <li><span class="strong">코드가 길어 여러 줄로 표시될 수 있습니다. 반드시 코드 전체를 선택하여 복사하십시오.</span></li>
       <li><span class="strong">공개 코드만 복사하여 설문에 입력</span>하십시오.</li>
       <li><span class="strong">비밀 코드는 텍스트 또는 스크린샷으로 보관</span>하십시오.</li>
-      <li>여러 번 생성해도 괜찮지만, 실제로 투표에 사용한 비밀 코드는 반드시 보관하십시오.</li>
-      <li>선거 복권 참여는 선택입니다. 비밀 코드 분실 시 상품을 수령할 수 없습니다. 비밀 코드만 보관해 두면, 공개 코드는 다시 계산할 수 있습니다.</li>
+      <li>당첨 시 공개 코드와 대응되는 비밀 코드가 필요하므로, 안전하게 보관하십시오.</li>
+      <li>비밀 코드 분실 시 상품을 수령할 수 없습니다. 비밀 코드만 있으면, 공개 코드는 다시 계산할 수 있습니다.</li>
+      <li>선거 복권 참여는 선택입니다.</li>
       <li>더 자세한 내용을 알아보려면 아래 내용을 읽어 보십시오.</li>
     </ul>
   </div>
