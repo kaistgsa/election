@@ -74,7 +74,7 @@
         document.querySelector('.code-public').innerHTML = publicText;
         document.querySelectorAll('.code-viewer').forEach(viewer => viewer.className = 'code-viewer');
         alert(!english ?
-          '지금 바로 전체 코드를 텍스트나 스크린샷으로 저장해 두십시오.\n코드를 확실하게 보관한 다음, 공개 코드만 설문에 입력하십시오.' :
+          '곧바로 전체 코드를 텍스트나 스크린샷으로 저장해 두십시오.\n코드를 확실하게 보관한 다음, 공개 코드만 설문에 입력하십시오.' :
           'Save the entire code as text or screenshot right now. Make sure the code pair is well kept, and then enter your public code into the form.');
       } catch (err) { // Internet Explorer에서 optional catch binding 미지원
         // 매우 오래된 웹 브라우저(Internet Explorer 10 등)에서는 실패할 수 있습니다.
