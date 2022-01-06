@@ -117,16 +117,22 @@
       padding: 0.3em 0.8rem;
     }
 
-    .empty {
-      color: #999;
-    }
-
     .code-private,
     .code-public {
       font-family: monospace, monospace;
       font-weight: bold;
       word-break: break-all;
       font-size: 1rem;
+    }
+
+    .empty {
+      color: #999;
+    }
+
+    .empty .code-private,
+    .empty .code-public {
+      font-family: sans-serif;
+      font-weight: normal;
     }
 
     .generate-button {
