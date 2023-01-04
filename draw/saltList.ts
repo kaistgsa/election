@@ -76,5 +76,5 @@ export const saltList: string[] = [
     '175000', // 현대글로비스
     '46150', // 현대제철
 
-    '8dSBlTgVESqGsTNpRaXaFD2AY9tQ9v6XHZTh1JKPec23e5clNZ7hKni04SZTsdqN',
+    'TPXDzRhV9JaP7U6kOtLSL3wbGa3jWEmVdp3MWzptJitf2WbCwyiPsOFk2VaoxpLR',
 ];
