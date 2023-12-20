@@ -3,7 +3,7 @@ import { codeList } from './codeList';
 import { saltList } from './saltList';
 
 // 유효한 모든 공개 코드를 사전식 순서로 정렬한 다음, 공백 없이 이어 붙인 것
-saltList.push(codeList.sort().join(''));
+saltList.push(codeList.map(c => c.normalize('NFC').trim()).sort().join(''));
 
 const salt: Buffer = Buffer.from(saltList.join(''), 'utf8');
 
