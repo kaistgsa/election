@@ -333,7 +333,7 @@
         문자열 사전식 순서는 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz로 합니다.</li>
     </ul>
   </div>
-  <h2>추첨에 사용되는 68개 정보 목록</h2>
+  <h2>추첨에 사용되는 정보 목록</h2>
   <div class="code-design">
     <ol>
       <li>하나은행 USD 최종 매매기준율</li>
@@ -342,10 +342,10 @@
       <li>하나은행 CNY 최종 매매기준율</li>
       <li>하나은행 GBP 최종 매매기준율</li>
       <li>KOSPI 종가</li>
-      <li>거래 정지 종목을 먼저 제외한, 유가증권시장 시가 총액 기준 내림차순 상위 60개 종목 종가</li>
-      <li style="word-break: break-all;" value="67">
+      <li>유가증권시장 시가 총액 기준 내림차순 상위 100개 종목 종가</li>
+      <li style="word-break: break-all;" value="107">
         <span style="font-family: monospace, monospace;">
-          GJ83Inem4t7rcvRIJeW0v6B1n1eCtqemWq0Swud3Y7IWB26EPut1wfP56WkTq4Jp
+          qyh6W2pT7uM4ffoeGzVg0Y6QFVBJ4X73ldj1W7gwYViJcYISVN6Wo8AGo53Zxg1X
         </span>
       </li>
       <li>유효한 모든 공개 코드를 문자열 사전식 순서로 정렬한 다음, 공백 없이 이어 붙인 것</li>
@@ -374,7 +374,7 @@
   <h2>기타 사항</h2>
   <div class="code-design-small">
     유가증권시장은 한국거래소 유가증권시장을 말합니다.
-    추첨에 사용되는 정보는 하나은행 웹 사이트와 KRX 정보데이터시스템에서 제공하는 정보를 기준으로 하며, 상장지수펀드는 제외합니다.
+    추첨에 사용되는 정보는 하나은행 웹 사이트와 KRX Data Marketplace에서 제공하는 정보를 기준으로 합니다. 종목 구성 및 시세는 KRX Data Marketplace '전종목 시세'(화면 번호 12001) 화면에서 조회한 것을 사용합니다.
     시가 총액 기준 내림차순 정렬을 할 때 시가 총액이 같은 종목이 있는 경우, 종목 코드가 큰 종목이 목록에서 더 먼저 나오도록 정렬합니다.
     공개 코드 입력 내용에 비밀 코드를 넣은 경우는 무효로 하며,
     공개 코드 입력 내용에서 공백과 개행 문자를 제거하여 올바른 공개 코드가 되는 경우 유효로 하고,
