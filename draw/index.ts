@@ -5,7 +5,13 @@ import { saltList } from './saltList';
 // 유효한 모든 공개 코드를 사전식 순서로 정렬한 다음, 공백 없이 이어 붙인 것
 saltList.push(codeList.map(c => c.normalize('NFC').trim()).sort().join(''));
 
-const salt: Buffer = Buffer.from(saltList.join(''), 'utf8');
+const saltText = saltList.join('');
+const saltPattern = /^[0-9a-zA-Z.]+$/;
+if (!saltPattern.test(saltText)) {
+    throw new Error('Salt contains invalid characters.');
+}
+
+const salt: Buffer = Buffer.from(saltText, 'utf8');
 
 // Node.js 기본값입니다. 미래에 변경될 것을 대비하여 고정해 둡니다.
 const scryptOptions: ScryptOptions = {
